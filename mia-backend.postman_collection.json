@@ -1,0 +1,199 @@
+{
+	"info": {
+		"_postman_id": "a45b806c-7c4f-4fad-804f-6979b420bee6",
+		"name": "mia-backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "instagram list feeds",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "instagram auth 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.instagram.com/oauth/authorize?client_id=880027855879954&redirect_uri=https://madeinapremont.fr/instagram/auth&scope=user_profile,user_media&response_type=code",
+					"protocol": "https",
+					"host": [
+						"api",
+						"instagram",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"authorize"
+					],
+					"query": [
+						{
+							"key": "client_id",
+							"value": "880027855879954"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "https://madeinapremont.fr/instagram/auth"
+						},
+						{
+							"key": "scope",
+							"value": "user_profile,user_media"
+						},
+						{
+							"key": "response_type",
+							"value": "code"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "instragram auth 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "client_id",
+							"value": "880027855879954",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "97db3bb97766754322071fb46426c769",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "https://madeinapremont.fr/instagram/auth",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "AQBGlJ3mTMJeB9RP__OsaS6bEuE3_cS5kuvsGVmQfrNKKZbcdWVecXtpJ9M4j8i9TgLSi7pfiSyfMcpuc-7bdsimXqFdJkFUWMP0KEBArUUrlyPURj1UVYI1dcyaTwFUKp1FsVnpJhuTBirgVvQ8klqKpKrGxrIXYIRpyN-Uu8we9u31StCbgvPZXUNWNNfkk0Gsgu_s-ZTGlTMDeZBDhwzWYUL6jzQu2qxZUyNU1OVhbA",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.instagram.com/oauth/access_token",
+					"protocol": "https",
+					"host": [
+						"api",
+						"instagram",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"access_token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "instragram get me",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://graph.instagram.com/me?access_token=IGQVJWQno0dXVNTkhoSk4ydWNtTnZAfYUlrTGx0VjExQmx4cUxFR0Y1UUZAuTV9NWjRCVGt6bkNGeDRxbHl0UkVlT0VxNC11UnpBNkFPSlU3V09TelhCMzBacnZAOVlQxQ3Rzb1lzaW5lMHZAvcnN3dXBlaFpNdkpvRWZAsc2k0",
+					"protocol": "https",
+					"host": [
+						"graph",
+						"instagram",
+						"com"
+					],
+					"path": [
+						"me"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "IGQVJWQno0dXVNTkhoSk4ydWNtTnZAfYUlrTGx0VjExQmx4cUxFR0Y1UUZAuTV9NWjRCVGt6bkNGeDRxbHl0UkVlT0VxNC11UnpBNkFPSlU3V09TelhCMzBacnZAOVlQxQ3Rzb1lzaW5lMHZAvcnN3dXBlaFpNdkpvRWZAsc2k0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "instragram get media",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://graph.instagram.com/me?access_token=IGQVJWQno0dXVNTkhoSk4ydWNtTnZAfYUlrTGx0VjExQmx4cUxFR0Y1UUZAuTV9NWjRCVGt6bkNGeDRxbHl0UkVlT0VxNC11UnpBNkFPSlU3V09TelhCMzBacnZAOVlQxQ3Rzb1lzaW5lMHZAvcnN3dXBlaFpNdkpvRWZAsc2k0",
+					"protocol": "https",
+					"host": [
+						"graph",
+						"instagram",
+						"com"
+					],
+					"path": [
+						"me"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "IGQVJWQno0dXVNTkhoSk4ydWNtTnZAfYUlrTGx0VjExQmx4cUxFR0Y1UUZAuTV9NWjRCVGt6bkNGeDRxbHl0UkVlT0VxNC11UnpBNkFPSlU3V09TelhCMzBacnZAOVlQxQ3Rzb1lzaW5lMHZAvcnN3dXBlaFpNdkpvRWZAsc2k0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "instragram get media detail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://graph.instagram.com/me?access_token=IGQVJWQno0dXVNTkhoSk4ydWNtTnZAfYUlrTGx0VjExQmx4cUxFR0Y1UUZAuTV9NWjRCVGt6bkNGeDRxbHl0UkVlT0VxNC11UnpBNkFPSlU3V09TelhCMzBacnZAOVlQxQ3Rzb1lzaW5lMHZAvcnN3dXBlaFpNdkpvRWZAsc2k0",
+					"protocol": "https",
+					"host": [
+						"graph",
+						"instagram",
+						"com"
+					],
+					"path": [
+						"me"
+					],
+					"query": [
+						{
+							"key": "access_token",
+							"value": "IGQVJWQno0dXVNTkhoSk4ydWNtTnZAfYUlrTGx0VjExQmx4cUxFR0Y1UUZAuTV9NWjRCVGt6bkNGeDRxbHl0UkVlT0VxNC11UnpBNkFPSlU3V09TelhCMzBacnZAOVlQxQ3Rzb1lzaW5lMHZAvcnN3dXBlaFpNdkpvRWZAsc2k0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
