@@ -149,7 +149,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://graph.instagram.com/me?access_token=IGQVJWQno0dXVNTkhoSk4ydWNtTnZAfYUlrTGx0VjExQmx4cUxFR0Y1UUZAuTV9NWjRCVGt6bkNGeDRxbHl0UkVlT0VxNC11UnpBNkFPSlU3V09TelhCMzBacnZAOVlQxQ3Rzb1lzaW5lMHZAvcnN3dXBlaFpNdkpvRWZAsc2k0",
+					"raw": "https://graph.instagram.com/17841447868631649/media?fields=id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=IGQVJYQ1BmR3lLd2FhWENOem5QX2k3Nnd2bjY3NlZALWVp0ekxkYlk0S2JwN2p4MUc1TURiOW1QemM3dWQxR3R0WXUwanpqR3FId0owR1pmZAmxPZA1FEU19PTW4tV0NYZA3NBdERuT2Q3MzhUM3ktaUxyQQZDZD",
 					"protocol": "https",
 					"host": [
 						"graph",
@@ -157,12 +157,17 @@
 						"com"
 					],
 					"path": [
-						"me"
+						"17841447868631649",
+						"media"
 					],
 					"query": [
 						{
+							"key": "fields",
+							"value": "id,media_type,media_url,permalink,thumbnail_url,timestamp,username"
+						},
+						{
 							"key": "access_token",
-							"value": "IGQVJWQno0dXVNTkhoSk4ydWNtTnZAfYUlrTGx0VjExQmx4cUxFR0Y1UUZAuTV9NWjRCVGt6bkNGeDRxbHl0UkVlT0VxNC11UnpBNkFPSlU3V09TelhCMzBacnZAOVlQxQ3Rzb1lzaW5lMHZAvcnN3dXBlaFpNdkpvRWZAsc2k0"
+							"value": "IGQVJYQ1BmR3lLd2FhWENOem5QX2k3Nnd2bjY3NlZALWVp0ekxkYlk0S2JwN2p4MUc1TURiOW1QemM3dWQxR3R0WXUwanpqR3FId0owR1pmZAmxPZA1FEU19PTW4tV0NYZA3NBdERuT2Q3MzhUM3ktaUxyQQZDZD"
 						}
 					]
 				}
@@ -175,7 +180,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://graph.instagram.com/me?access_token=IGQVJWQno0dXVNTkhoSk4ydWNtTnZAfYUlrTGx0VjExQmx4cUxFR0Y1UUZAuTV9NWjRCVGt6bkNGeDRxbHl0UkVlT0VxNC11UnpBNkFPSlU3V09TelhCMzBacnZAOVlQxQ3Rzb1lzaW5lMHZAvcnN3dXBlaFpNdkpvRWZAsc2k0",
+					"raw": "https://graph.instagram.com/17874395603355273/children?fields=id,media_type,media_url,permalink,thumbnail_url,timestamp,username&access_token=IGQVJYQ1BmR3lLd2FhWENOem5QX2k3Nnd2bjY3NlZALWVp0ekxkYlk0S2JwN2p4MUc1TURiOW1QemM3dWQxR3R0WXUwanpqR3FId0owR1pmZAmxPZA1FEU19PTW4tV0NYZA3NBdERuT2Q3MzhUM3ktaUxyQQZDZD",
 					"protocol": "https",
 					"host": [
 						"graph",
@@ -183,12 +188,17 @@
 						"com"
 					],
 					"path": [
-						"me"
+						"17874395603355273",
+						"children"
 					],
 					"query": [
 						{
+							"key": "fields",
+							"value": "id,media_type,media_url,permalink,thumbnail_url,timestamp,username"
+						},
+						{
 							"key": "access_token",
-							"value": "IGQVJWQno0dXVNTkhoSk4ydWNtTnZAfYUlrTGx0VjExQmx4cUxFR0Y1UUZAuTV9NWjRCVGt6bkNGeDRxbHl0UkVlT0VxNC11UnpBNkFPSlU3V09TelhCMzBacnZAOVlQxQ3Rzb1lzaW5lMHZAvcnN3dXBlaFpNdkpvRWZAsc2k0"
+							"value": "IGQVJYQ1BmR3lLd2FhWENOem5QX2k3Nnd2bjY3NlZALWVp0ekxkYlk0S2JwN2p4MUc1TURiOW1QemM3dWQxR3R0WXUwanpqR3FId0owR1pmZAmxPZA1FEU19PTW4tV0NYZA3NBdERuT2Q3MzhUM3ktaUxyQQZDZD"
 						}
 					]
 				}
