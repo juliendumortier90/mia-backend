@@ -23,9 +23,16 @@ frameworkVersion: "2"
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
+    includeModules: true
+    forceExclude:
+      - aws-sdk
 
 package:
   excludeDevDependencies: true
+  individually: true
+  exclude:
+    - "./**"
+    - "node_modules/**/aws-sdk/**"
 
 plugins:
   - "serverless-webpack"
