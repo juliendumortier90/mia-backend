@@ -43,6 +43,7 @@ functions:
       - http:
           path: /instagram/list-feeds
           method: get
+          cors: true
   insta-oauth:
     handler: src/functions/instagram/authentication/index.handler
     iamRoleStatements:
