@@ -67,7 +67,7 @@ functions:
   insta-updatefeeds-job:
     transfer:
     handler: src/functions/instagram/update-feeds/job.cronHandler
-    events: [{ schedule: cron(0/10 * ? * * *) }] # every 10min
+    events: [{ schedule: cron(0/30 * ? * * *) }] # every 30min
     iamRoleStatements:
       - Effect: Allow
         Action: ["ssm:GetParameter"]
