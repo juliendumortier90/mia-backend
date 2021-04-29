@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
-import { ApiError } from 'src/utils/apiError'
+import { ApiError } from '../../../utils/apiError'
 import { Response } from '../../../utils/reponse'
 import { ShopItem, ShopService } from '../service'
 
