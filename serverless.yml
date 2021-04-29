@@ -51,9 +51,34 @@ provider:
       Resource: ["arn:aws:lambda:*"]
 
 functions:
-  function:
+  list-feeds:
     handler: src/functions/instagram/list-feeds/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["ssm:GetParameter", "ssm:PutParameter"]
+        Resource:
+          - "arn:aws:ssm:${self:provider.region}:*:parameter/${self:service}/${self:provider.stage}/instagram/*"
     events:
       - http:
           path: /instagram/list-feeds
           method: get
+  insta-oauth:
+    handler: src/functions/instagram/authentication/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["ssm:GetParameter", "ssm:PutParameter"]
+        Resource:
+          - "arn:aws:ssm:${self:provider.region}:*:parameter/${self:service}/${self:provider.stage}/instagram/*"
+    events:
+      - http:
+          path: /instagram/oauth
+          method: get
+  insta-refreshtoken-job:
+    transfer:
+    handler: src/functions/instagram/authentication/job.cronHandler
+    events: [{ schedule: cron(0/15 * * * ? *) }] # cron(0 8 1 * ? *) every 1st day of month
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["ssm:GetParameter", "ssm:PutParameter"]
+        Resource:
+          - "arn:aws:ssm:${self:provider.region}:*:parameter/${self:service}/${self:provider.stage}/instagram/*"
