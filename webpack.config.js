@@ -1,6 +1,7 @@
 const path = require('path');
 const slsw = require('serverless-webpack');
 const nodeExternals = require('webpack-node-externals');
+const WebpackBarPlugin = require('webpackbar');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
   resolve: {
     extensions: ['.mjs', '.json', '.ts'],
     symlinks: false,
-    cacheWithContext: false,
+    cacheWithContext: true,
   },
   output: {
     libraryTarget: 'commonjs',
@@ -31,7 +32,6 @@ module.exports = {
         loader: 'ts-loader',
         exclude: [
           [
-            path.resolve(__dirname, 'node_modules'),
             path.resolve(__dirname, '.serverless'),
             path.resolve(__dirname, '.webpack'),
           ],
@@ -44,11 +44,15 @@ module.exports = {
     ],
   },
   plugins: [
-    // new ForkTsCheckerWebpackPlugin({
-    //   eslint: true,
-    //   eslintOptions: {
-    //     cache: true
-    //   }
-    // })
+    new WebpackBarPlugin({
+      profile: true,
+      name: 'backend-mia'
+    }),
+    new ForkTsCheckerWebpackPlugin({
+      eslint: {
+        enabled: false,
+        files: [path.join(__dirname, 'src', '**', '*.ts')]
+      }
+    })
   ],
 };

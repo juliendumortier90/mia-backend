@@ -36,6 +36,7 @@ package:
 
 plugins:
   - "serverless-webpack"
+  - serverless-iam-roles-per-function
 provider:
   name: aws
   runtime: nodejs12.x
@@ -57,7 +58,7 @@ functions:
       - Effect: Allow
         Action: ["ssm:GetParameter", "ssm:PutParameter"]
         Resource:
-          - "arn:aws:ssm:${self:provider.region}:*:parameter/${self:service}/${self:provider.stage}/instagram/*"
+          - "arn:aws:ssm:*:636947615075:parameter/*"
     events:
       - http:
           path: /instagram/list-feeds
@@ -68,7 +69,7 @@ functions:
       - Effect: Allow
         Action: ["ssm:GetParameter", "ssm:PutParameter"]
         Resource:
-          - "arn:aws:ssm:${self:provider.region}:*:parameter/${self:service}/${self:provider.stage}/instagram/*"
+          - "arn:aws:ssm:*:636947615075:parameter/*"
     events:
       - http:
           path: /instagram/oauth
@@ -81,4 +82,4 @@ functions:
       - Effect: Allow
         Action: ["ssm:GetParameter", "ssm:PutParameter"]
         Resource:
-          - "arn:aws:ssm:${self:provider.region}:*:parameter/${self:service}/${self:provider.stage}/instagram/*"
+          - "arn:aws:ssm:*:636947615075:parameter/*"

@@ -1,4 +1,4 @@
-import Axios, { AxiosError, AxiosResponse, } from 'axios'
+import Axios, { AxiosError, AxiosResponse } from 'axios'
 import FormData from 'form-data'
 import { ApiError } from '../../utils/apiError'
 import { Logger } from '../../utils/logger'
@@ -10,10 +10,11 @@ const ssm = new AWS.SSM({})
 export class InstagramService {
 
   public static async listFeeds(): Promise<any> {
-    return await this.getLastFeeds()
+    return await InstagramService.getTokenFromSSM()
+    // return await this.getLastFeeds()
   }
 
-  private static async getLastFeeds(): Promise<any> {
+  public static async getLastFeeds(): Promise<any> {
     return [ { feed1: 'firstField' }]
   }
 
@@ -70,7 +71,7 @@ export class InstagramService {
 
   public static async saveTokenToSSM(token: string) {
     const parameter: SSM.Types.PutParameterRequest = {
-      Name: '/backend-mia/integ/instagram-token',
+      Name: 'instagram-token',
       Value: token,
       Overwrite: true,
       Type: 'SecureString'
@@ -81,7 +82,7 @@ export class InstagramService {
 
   public static async getTokenFromSSM(): Promise<string> {
     const parameter: SSM.Types.GetParameterRequest = {
-      Name: '/backend-mia/integ/instagram-token',
+      Name: 'instagram-token',
       WithDecryption: true
     }
     const parameterResult = await ssm.getParameter(parameter).promise()
