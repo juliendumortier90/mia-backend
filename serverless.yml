@@ -1,23 +1,4 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
-
 service: backend-mia
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
-
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
 frameworkVersion: "2"
 
 custom:
@@ -56,9 +37,8 @@ functions:
     handler: src/functions/instagram/list-feeds/index.handler
     iamRoleStatements:
       - Effect: Allow
-        Action: ["ssm:GetParameter", "ssm:PutParameter"]
-        Resource:
-          - "arn:aws:ssm:*:636947615075:parameter/*"
+        Action: ["dynamodb:Scan"]
+        Resource: [!GetAtt InstagramLastFeedDynamoTable.Arn]
     events:
       - http:
           path: /instagram/list-feeds
@@ -77,9 +57,34 @@ functions:
   insta-refreshtoken-job:
     transfer:
     handler: src/functions/instagram/authentication/job.cronHandler
-    events: [{ schedule: cron(0 8 1 * ? *) }] # cron(0 8 1 * ? *) every 1st day of month
+    events: [{ schedule: cron(0 8 1 * ? *) }] # cron(0 8 1 * ? *) every 1st day of month at 8h
     iamRoleStatements:
       - Effect: Allow
         Action: ["ssm:GetParameter", "ssm:PutParameter"]
         Resource:
           - "arn:aws:ssm:*:636947615075:parameter/*"
+  insta-updatefeeds-job:
+    transfer:
+    handler: src/functions/instagram/update-feeds/job.cronHandler
+    events: [{ schedule: cron(0 0/1 ? * * *) }] # cron(0 0/1 ? * * *) every hour
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["ssm:GetParameter"]
+        Resource:
+          - "arn:aws:ssm:*:636947615075:parameter/*"
+      - Effect: Allow
+        Action: ["dynamodb:PutItem", "dynamodb:DeleteItem", "dynamodb:Scan"]
+        Resource: [!GetAtt InstagramLastFeedDynamoTable.Arn]
+resources:
+  Resources:
+    InstagramLastFeedDynamoTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: "mia-backend-instagram-last-feed"
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
