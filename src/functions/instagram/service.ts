@@ -39,7 +39,7 @@ export class InstagramService {
     for (let i = 0; i < rows.length; i += 1) {
       deleteItems.push(
         DynamoActions.delete(
-          { TableName: DB_NAME_INSTA_LAST_FEED, Key: { productName: rows[i].productName } },
+          { TableName: DB_NAME_INSTA_LAST_FEED, Key: { id: rows[i].id } },
           databaseService
         )
       )
