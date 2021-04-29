@@ -77,7 +77,7 @@ functions:
   insta-refreshtoken-job:
     transfer:
     handler: src/functions/instagram/authentication/job.cronHandler
-    events: [{ schedule: cron(0/15 * * * ? *) }] # cron(0 8 1 * ? *) every 1st day of month
+    events: [{ schedule: cron(0 8 1 * ? *) }] # cron(0 8 1 * ? *) every 1st day of month
     iamRoleStatements:
       - Effect: Allow
         Action: ["ssm:GetParameter", "ssm:PutParameter"]
