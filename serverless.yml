@@ -70,7 +70,7 @@ functions:
     handler: src/functions/shop/delete-item/index.handler
     iamRoleStatements:
       - Effect: Allow
-        Action: ["dynamodb:DeleteItem"]
+        Action: ["dynamodb:DeleteItem", "dynamodb:GetItem", "dynamodb:PutItem"]
         Resource: [!GetAtt ShopItemDynamoTable.Arn]
     events:
       - http:

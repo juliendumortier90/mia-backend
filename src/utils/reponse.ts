@@ -17,6 +17,10 @@ export class Response {
         const body = data instanceof ApiError ? JSON.stringify(data.error) : JSON.stringify(data)
         return {
           statusCode: 400,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': true,
+          },
           body
         }
     }

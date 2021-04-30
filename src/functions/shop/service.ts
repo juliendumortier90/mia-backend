@@ -17,8 +17,10 @@ export interface ShopItem {
     type: ShopTypeEnum
     name: string
     price: number
-    instock: boolean
+    stock: number
     pictures: string[]
+    partner: boolean
+    partnerName: string
     paypalRef: string
 }
 
@@ -29,7 +31,12 @@ export class ShopService {
   }
 
   public static async addItem(item: ShopItem) {
-    Logger.logInfo('ShopService', 'try to add : '+JSON.stringify(item))
+    if (item.id == null || item.id.length < 1) {
+      const newId = Math.random().toString(36).substr(2, 9)
+      item.id = newId
+      Logger.logInfo('ShopService', 'create id for new item : ' + newId)
+    }
+    Logger.logInfo('ShopService', 'Add item : '+JSON.stringify(item))
     await DynamoActions.put({
         TableName: DB_NAME_SHOP_ITEM,
         Item: item
@@ -37,6 +44,17 @@ export class ShopService {
   }
 
   public static async deleteItem(itemId: string) {
+    const item = await DynamoActions.get({
+      TableName: DB_NAME_SHOP_ITEM,
+      Key: { id: itemId }
+    }, databaseService)
+    item.id = item.id+'_deleted'
+    
+    await DynamoActions.put({
+      TableName: DB_NAME_SHOP_ITEM,
+      Item: item
+    }, databaseService)
+
     await DynamoActions.delete({
         TableName: DB_NAME_SHOP_ITEM,
         Key: { id: itemId }
