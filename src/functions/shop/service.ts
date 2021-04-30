@@ -27,7 +27,17 @@ export interface ShopItem {
 export class ShopService {
 
   public static async listItems(): Promise<ShopItem[]> {
-    return (await DynamoActions.scan({ TableName: DB_NAME_SHOP_ITEM }, databaseService)) as unknown as ShopItem[]
+    let params = {
+      TableName : DB_NAME_SHOP_ITEM,
+      FilterExpression: "NOT contains(#id, :idpart)",
+      ExpressionAttributeNames: {
+          "#id": "id",
+      },
+      ExpressionAttributeValues: {
+          ":idpart": "_deleted",
+      }       
+    };
+    return (await DynamoActions.scan(params, databaseService)) as unknown as ShopItem[]
   }
 
   public static async addItem(item: ShopItem) {
@@ -49,7 +59,7 @@ export class ShopService {
       Key: { id: itemId }
     }, databaseService)
     item.id = item.id+'_deleted'
-    
+
     await DynamoActions.put({
       TableName: DB_NAME_SHOP_ITEM,
       Item: item
