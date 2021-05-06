@@ -6,6 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@paypal/checkout-server-sdk": "^1.0.2",
+    "@paypal/payouts-sdk": "^1.1.0",
     "axios": "^0.21.1",
     "form-data": "^4.0.0",
     "source-map-support": "^0.5.19"

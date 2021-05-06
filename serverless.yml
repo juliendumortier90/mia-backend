@@ -77,6 +77,42 @@ functions:
           path: /shop/delete-item
           method: post
           cors: true
+  check-stock:
+    handler: src/functions/shop/check-stock/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["dynamodb:Scan"]
+        Resource: [!GetAtt ShopItemDynamoTable.Arn]
+    events:
+      - http:
+          path: /shop/check-stock
+          method: post
+          cors: true
+  oncomplete-transaction:
+    handler: src/functions/shop/oncomplete-transaction/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["dynamodb:GetItem", "dynamodb:PutItem"]
+        Resource: [!GetAtt ShopItemDynamoTable.Arn]
+      - Effect: Allow
+        Action: ["dynamodb:GetItem", "dynamodb:PutItem"]
+        Resource: [!GetAtt ShopOrderDynamoTable.Arn]
+    events:
+      - http:
+          path: /shop/oncomplete-transaction
+          method: post
+          cors: true
+  hello-callback:
+    handler: src/functions/member/hello-callback/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["dynamodb:PutItem"]
+        Resource: [!GetAtt MemberItemDynamoTable.Arn]
+    events:
+      - http:
+          path: /member/hello-callback
+          method: post
+          cors: true
   insta-oauth:
     handler: src/functions/instagram/authentication/index.handler
     iamRoleStatements:
@@ -126,6 +162,28 @@ resources:
       Type: "AWS::DynamoDB::Table"
       Properties:
         TableName: "mia-backend-shop-item"
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+    ShopOrderDynamoTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: "mia-backend-shop-order"
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+    MemberItemDynamoTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: "mia-backend-member-item"
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S

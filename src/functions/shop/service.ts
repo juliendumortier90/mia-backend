@@ -25,6 +25,26 @@ export interface ShopItem {
 }
 
 export class ShopService {
+  public static async getItemsByIds(ids): Promise<ShopItem[]> {
+    const shopItemIdsAttributeValues = ids.reduce(
+      (shopItemIdsAttributeValues: any, id: string) => {
+          const shopItemKey = ':' + id;
+          shopItemIdsAttributeValues[shopItemKey.toString()] = id;
+          return shopItemIdsAttributeValues;
+      },
+      {},
+    );
+
+    const params: DocumentClient.ScanInput = {
+      TableName: DB_NAME_SHOP_ITEM,
+      FilterExpression: `id IN (${Object.keys(
+        shopItemIdsAttributeValues,
+      )})`,
+      ExpressionAttributeValues: shopItemIdsAttributeValues,
+    };
+
+    return (await DynamoActions.scan(params, databaseService)) as unknown as ShopItem[]
+  }
 
   public static async listItems(): Promise<ShopItem[]> {
     let params = {

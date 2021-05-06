@@ -9,7 +9,8 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     if(!item.type || !item.name || !item.price || !item.pictures) {
       throw new ApiError('add item', 'shop item to add not valid', { message: 'shop item to add not valid'})
     }
-    return Response.makeSuccessResponse(await ShopService.addItem(item as ShopItem))
+    await ShopService.addItem(item as ShopItem)
+    return Response.makeSuccessResponse()
   } catch (error) {
     return Response.makeErrorResponse(error)
   }
