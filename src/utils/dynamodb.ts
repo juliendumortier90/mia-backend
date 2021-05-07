@@ -37,6 +37,19 @@ export class DynamoActions {
     return result.Item
   }
 
+  static async update(
+    params: DocumentClient.UpdateItemInput,
+    databaseService: DocumentClient
+  ): Promise<DocumentClient.AttributeMap | undefined> {
+    const result = await databaseService
+      .update(params)
+      .promise()
+      .catch((error: AWSError) => {
+        throw new ApiError('Dynamo update', 'error during update operation', error)
+      })
+    return result
+  }
+
   static async delete(params: DocumentClient.DeleteItemInput, databaseService: DocumentClient): Promise<void> {
     await databaseService
       .delete(params)

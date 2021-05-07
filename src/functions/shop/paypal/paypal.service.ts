@@ -1,11 +1,14 @@
-import { ShopItem } from '../service'
+import { Logger } from '../../../utils/logger';
 
 const paypal = require('@paypal/checkout-server-sdk')
 
 export class PaypalService {
 
-    private static client() {
-        return new paypal.core.PayPalHttpClient(PaypalService.environment())
+    public static async getOrderById(orderId: string) {
+        let request = new paypal.orders.OrdersGetRequest(orderId)
+        const response = await PaypalService.client().execute(request)
+        Logger.logInfo('GetOrderById', JSON.stringify(response))
+        return response
     }
 
     private static environment() {
@@ -17,37 +20,7 @@ export class PaypalService {
         )
     }
 
-    public static async makeAnOrder(items: ShopItem[]) {
-        console.log(items)
-        let request = new paypal.orders.OrdersCreateRequest()
-        request.requestBody({
-                                intent: 'CAPTURE',
-                                purchase_units: [
-                                    {
-                                        amount: {
-                                            value: '7',
-                                            currency_code: 'EUR',
-                                            breakdown: {
-                                                item_total: {value: '7', currency_code: 'EUR'}
-                                            }
-                                        },
-                                        invoice_id: 'muesli_invoice_id',
-                                        items: [{
-                                            name: 'Hafer',
-                                            unit_amount: {value: '3', currency_code: 'EUR'},
-                                            quantity: '1',
-                                            sku: 'haf001'
-                                        }, {
-                                            name: 'Discount',
-                                            unit_amount: {value: '4', currency_code: 'EUR'},
-                                            quantity: '1',
-                                            sku: 'dsc002'
-                                        }]
-                                    }
-                                ]
-                            })
-        const response = await PaypalService.client().execute(request)
-        console.log('pp resp: ' +  JSON.stringify(response))
-        return response
+    private static client() {
+        return new paypal.core.PayPalHttpClient(PaypalService.environment())
     }
 }

@@ -1,7 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { ApiError } from '../../../utils/apiError'
 import { Response } from '../../../utils/reponse'
-import { ShopService } from '../service'
+import { ShopService } from '../shop.service'
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> =>   {
   try {
