@@ -6,13 +6,13 @@ import { ShopService } from '../shop.service'
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> =>   {
   try {
     const itemsIds = JSON.parse(event['body'])
-    console.log(itemsIds)
 
     Logger.logInfo('Check Stock Items', 'Check if ids is not in stock: '+ JSON.stringify(itemsIds))
     // check number of items in stock
     const items = await ShopService.getItemsByIds(itemsIds)
     for (let item of items) {
-      if (item.stock < 1) {
+      const nbItemForId = itemsIds.filter(current => current == item.id).length
+      if (item.stock < nbItemForId) {
         Logger.logError('Check Stock Items', 'item is out of stock: '+ JSON.stringify(item), item)
         return Response.makeSuccessResponse({ stock: 'ko', item: item})
       }
