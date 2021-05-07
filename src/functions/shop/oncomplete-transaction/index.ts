@@ -12,7 +12,9 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     
     Logger.logInfo('On Complete Transaction', 'clientOrder: ' + JSON.stringify(clientOrder))
 
-    const order = (await PaypalService.getOrderById(clientOrder.id)).result
+    const paypalOrder = await PaypalService.getOrderById(clientOrder.id)
+    Logger.logInfo('On Complete Transaction', 'paypalOrder: ' + JSON.stringify(paypalOrder))
+    const order = paypalOrder.result
 
     if (order.status !== 'COMPLETED') {
       throw new ApiError('On Complete Transaction', 'the order status is not COMPLETED', order)
