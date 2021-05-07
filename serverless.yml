@@ -92,11 +92,11 @@ functions:
     handler: src/functions/shop/oncomplete-transaction/index.handler
     iamRoleStatements:
       - Effect: Allow
-        Action: ["dynamodb:GetItem", "dynamodb:PutItem"]
+        Action: ["dynamodb:GetItem", "dynamodb:ScanItem", "dynamodb:UpdateItem"]
         Resource: [!GetAtt ShopItemDynamoTable.Arn]
       - Effect: Allow
-        Action: ["dynamodb:GetItem", "dynamodb:PutItem"]
-        Resource: [!GetAtt ShopOrderDynamoTable.Arn]
+        Action: ["dynamodb:GetItem", "dynamodb:ScanItem", "dynamodb:PutItem"]
+        Resource: [!GetAtt OrderItemDynamoTable.Arn]
     events:
       - http:
           path: /shop/oncomplete-transaction
@@ -169,10 +169,10 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
-    ShopOrderDynamoTable:
+    OrderItemDynamoTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
-        TableName: "mia-backend-shop-order"
+        TableName: "mia-backend-order-item"
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
