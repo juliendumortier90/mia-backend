@@ -16,8 +16,11 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     Logger.logInfo('On Complete Transaction', 'paypalOrder: ' + JSON.stringify(paypalOrder))
     const order = paypalOrder.result
 
+
     if (order.status !== 'COMPLETED') {
       throw new ApiError('On Complete Transaction', 'the order status is not COMPLETED', order)
+    } else {
+        Logger.logInfo('On Complete Transaction', 'status is complete')
     }
     
     // check if total price is correct
@@ -26,6 +29,8 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
             || 
             (order.purchase_units[0].amount.value !== clientOrder.purchase_units[0].amount.value)) {
       throw new ApiError('On Complete Transaction', 'clientOrderPrice is not equal to paypalOrder price', order)
+    } else {
+        Logger.logInfo('On Complete Transaction', 'price is correct')
     }
 
     const payeeEmail = order.purchase_units[0].payee.email_address
@@ -85,6 +90,10 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     // update stock
     for (let paypalItem of paypalItems) {
       const itemDb = await ShopService.getItemById(paypalItem.description)
+      if (itemDb == undefined) {
+        Logger.logInfo('On Complete Transaction - GetItem', 'item not found in db: ' + paypalItem.description)
+      }
+      itemDb.pictures = []
       items.push(itemDb)
       await ShopService.decreaseStockItem(itemDb.id)
     }
