@@ -54,7 +54,7 @@ export class LoginService {
         }, databaseService) as User
     }
 
-    public static async generateTokenForUser(user): Promise<any> {
+    public static async generateTokenForUser(user: User): Promise<any> {
         // generate token
         const tokgen = new TokenGenerator(); // Default is a 128-bit token encoded in base58
         const token = tokgen.generate();
@@ -71,7 +71,7 @@ export class LoginService {
         // remove old from db
         await DynamoActions.delete({
             TableName: DB_NAME_USER_TOKEN,
-            Key: { token }
+            Key: { login: user.login }
         }, databaseService)
 
         Logger.logInfo('LoginService', 'try to put new user ' + user.login + ' ; token: ' + token)

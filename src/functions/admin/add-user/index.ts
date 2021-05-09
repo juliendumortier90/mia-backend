@@ -9,7 +9,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
   try {
     const body = JSON.parse(event['body'])
     // get login and password
-    const userToAdd = body.user as User
+    const userToAdd = body as User
     
     if (userToAdd.login == null ||  userToAdd.login.length < 4 || userToAdd.passwordMd5 == null || userToAdd.passwordMd5.length < 5) {
       throw new ApiError('Add User Error', 'les paramètres du user ne sont pas tous corrects', userToAdd)
@@ -18,9 +18,9 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     userToAdd.creationDate = timestampNowPlus(1, 'seconds').toString()
 
     // get in bdd by login
-    const user = await LoginService.addUser(userToAdd)
+    await LoginService.addUser(userToAdd)
 
-    const userToken = await LoginService.generateTokenForUser(user)
+    const userToken = await LoginService.generateTokenForUser(userToAdd)
 
     return Response.makeSuccessResponse(userToken)
   } catch (error) {
