@@ -26,9 +26,8 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 
     // make token
     const userToken = await LoginService.generateTokenForUser(user)
-    userToken.user.password = 'anonymised' // anonymise password
 
-    return Response.makeSuccessResponse(userToken)
+    return Response.makeSuccessResponse(userToken.token)
   } catch (error) {
     return Response.makeErrorResponse(error)
   }

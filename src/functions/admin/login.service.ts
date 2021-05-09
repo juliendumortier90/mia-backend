@@ -5,7 +5,7 @@ import { ApiError } from '../../utils/apiError';
 import { DynamoActions } from '../../utils/dynamodb';
 import { Logger } from '../../utils/logger';
 import { TokenGenerator } from 'ts-token-generator';
-import { timestampNowPlus } from 'src/utils/date';
+import { timestampNowPlus } from '../..//utils/date';
 
 dayjs.extend(timezone)
 

@@ -3,7 +3,7 @@ import { Response } from '../../../utils/reponse'
 import { LoginService } from '../login.service';
 import { ApiError } from '../../../utils/apiError';
 import { User } from '../login.service';
-import { timestampNowPlus } from 'src/utils/date';
+import { timestampNowPlus } from '../../../utils/date';
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> =>   {
   try {
@@ -21,9 +21,8 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     const user = await LoginService.addUser(userToAdd)
 
     const userToken = await LoginService.generateTokenForUser(user)
-    userToken.user.password = 'anonymised' // anonymise password
 
-    return Response.makeSuccessResponse(userToken)
+    return Response.makeSuccessResponse(userToken.token)
   } catch (error) {
     return Response.makeErrorResponse(error)
   }
