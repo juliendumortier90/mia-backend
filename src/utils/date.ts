@@ -26,15 +26,6 @@ export const getNbMonthBetweenTwoDate = (dateStart: string, dateEnd: string): nu
 export const addNbDayToDate = (date: string, nbDaysToAdd: number): string =>
   formatDateFromDayjs(dayjs(date).add(nbDaysToAdd, 'day'))
 
-export const calculatePeriodDays = (newValidityEndDate: string, termStartDate: string): number => {
-  const nbDays = Math.abs(getNbDayBetweenTwoDate(termStartDate, newValidityEndDate))
-  Logger.add(
-    LogLevel.DEBUG,
-    `Calculating the number of days between ${termStartDate} & ${newValidityEndDate} : ${nbDays}`
-  )
-  return nbDays
-}
-
 export const dateIsAfter = (baseDate: string, checkDate: string): boolean => dayjs(checkDate).isAfter(baseDate)
 export const dateIsBefore = (baseDate: string, checkDate: string): boolean => dayjs(checkDate).isBefore(baseDate)
 
