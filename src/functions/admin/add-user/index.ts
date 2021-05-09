@@ -1,12 +1,9 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { Response } from '../../../utils/reponse'
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone'
 import { LoginService } from '../login.service';
 import { ApiError } from '../../../utils/apiError';
 import { User } from '../login.service';
-
-dayjs.extend(timezone)
+import { timestampNowPlus } from 'src/utils/date';
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> =>   {
   try {
@@ -18,7 +15,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       throw new ApiError('Add User Error', 'les paramètres du user ne sont pas tous corrects', userToAdd)
     }
 
-    userToAdd.creationDate = dayjs().valueOf().toString()
+    userToAdd.creationDate = timestampNowPlus(1, 'seconds').toString()
 
     // get in bdd by login
     const user = await LoginService.addUser(userToAdd)

@@ -5,6 +5,7 @@ import { ApiError } from '../../utils/apiError';
 import { DynamoActions } from '../../utils/dynamodb';
 import { Logger } from '../../utils/logger';
 import { TokenGenerator } from 'ts-token-generator';
+import { timestampNowPlus } from 'src/utils/date';
 
 dayjs.extend(timezone)
 
@@ -42,7 +43,7 @@ export class LoginService {
             TableName: DB_NAME_USER,
             Item: user
           }, databaseService)
-        Logger.logInfo('LoginService', 'Add user : '+JSON.stringify(user))
+        Logger.logInfo('LoginService', 'Add user : ' + JSON.stringify(user))
     }
 
     public static async getUserByLogin(login: any): Promise<User> {
@@ -58,32 +59,24 @@ export class LoginService {
         const tokgen = new TokenGenerator(); // Default is a 128-bit token encoded in base58
         const token = tokgen.generate();
 
-        Logger.logInfo('LoginService', 'generate token for user : ' + JSON.stringify(user) + ' ; token: ' + token)
+        Logger.logInfo('LoginService', 'generate token for user : ' + user.login + ' ; token: ' + token)
         const userToken = {
-            user,
-            token,
-            expiredAt: this.timestampNowPlus(2, 'days'),
+            user: user,
+            token: token,
+            expiredAt: timestampNowPlus(2, 'days').toString(),
         }
 
+        Logger.logInfo('LoginService', 'try to delete old token for user ' + user.login + ' ; token: ' + token)
+       
         // remove old from db
         await DynamoActions.delete({
             TableName: DB_NAME_USER_TOKEN,
             Key: { token }
         }, databaseService)
-        
+
+        Logger.logInfo('LoginService', 'try to put new user ' + user.login + ' ; token: ' + token)
+       
         // put in db
-        await DynamoActions.put({ TableName: DB_NAME_USER_TOKEN, Item: userToken }, databaseService)
-    }
-
-    public static getNow(): string {
-        return dayjs().valueOf().toString()
-    }
-
-    private static getFormatedTodayDate(): string {
-        return dayjs().tz('Europe/Paris').format('YYYY-MM-DD')
-    }
-
-    private static timestampNowPlus(number: number, type: dayjs.OpUnitType): number {
-        return dayjs(this.getFormatedTodayDate()).add(number, type).unix()
+        return await DynamoActions.put({ TableName: DB_NAME_USER_TOKEN, Item: userToken }, databaseService)
     }
 }
