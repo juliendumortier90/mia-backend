@@ -11,8 +11,7 @@ dayjs.extend(timezone)
 
 const databaseService: DocumentClient = new DocumentClient()
 const DB_NAME_USER = 'mia-backend-user'
-const DB_NAME_USER_TOKEN = 'mia-backend-user-token'
-
+const DB_NAME_USER_TOKEN = 'mia-backend-admin-token'
 
 export interface User {
     login: string
@@ -61,7 +60,7 @@ export class LoginService {
 
         Logger.logInfo('LoginService', 'generate token for user : ' + user.login + ' ; token: ' + token)
         const userToken = {
-            user: user,
+            login: user.login,
             token: token,
             expiredAt: timestampNowPlus(2, 'days').toString(),
         }

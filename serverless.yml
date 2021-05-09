@@ -51,6 +51,9 @@ functions:
     handler: src/functions/admin/add-user/index.handler
     iamRoleStatements:
       - Effect: Allow
+        Action: ["dynamodb:DeleteItem", "dynamodb:PutItem"]
+        Resource: [!GetAtt UserTokenDynamoTable.Arn]
+      - Effect: Allow
         Action: ["dynamodb:Scan", "dynamodb:PutItem"]
         Resource: [!GetAtt UserDynamoTable.Arn]
     events:
@@ -230,14 +233,14 @@ resources:
     UserTokenDynamoTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
-        TableName: "mia-backend-user-token"
+        TableName: "mia-backend-admin-token"
         AttributeDefinitions:
-          - AttributeName: token
+          - AttributeName: login
             AttributeType: S
         BillingMode: PAY_PER_REQUEST
         TimeToLiveSpecification:
           AttributeName: expiredAt
           Enabled: true
         KeySchema:
-          - AttributeName: token
+          - AttributeName: login
             KeyType: HASH
