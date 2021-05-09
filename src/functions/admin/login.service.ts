@@ -77,6 +77,8 @@ export class LoginService {
         Logger.logInfo('LoginService', 'try to put new user ' + user.login + ' ; token: ' + token)
        
         // put in db
-        return await DynamoActions.put({ TableName: DB_NAME_USER_TOKEN, Item: userToken }, databaseService)
+        await DynamoActions.put({ TableName: DB_NAME_USER_TOKEN, Item: userToken }, databaseService)
+
+        return token
     }
 }
