@@ -33,6 +33,31 @@ provider:
       Resource: ["arn:aws:lambda:*"]
 
 functions:
+  login:
+    handler: src/functions/admin/login/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["dynamodb:DeleteItem", "dynamodb:PutItem"]
+        Resource: [!GetAtt UserTokenDynamoTable.Arn]
+      - Effect: Allow
+        Action: ["dynamodb:GetItem"]
+        Resource: [!GetAtt UserDynamoTable.Arn]
+    events:
+      - http:
+          path: /admin/login
+          method: post
+          cors: true
+  add-user:
+    handler: src/functions/admin/add-user/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["dynamodb:Scan", "dynamodb:PutItem"]
+        Resource: [!GetAtt UserDynamoTable.Arn]
+    events:
+      - http:
+          path: /admin/add-user
+          method: post
+          cors: true
   list-feeds:
     handler: src/functions/instagram/list-feeds/index.handler
     iamRoleStatements:
@@ -190,4 +215,29 @@ resources:
         BillingMode: PAY_PER_REQUEST
         KeySchema:
           - AttributeName: id
+            KeyType: HASH
+    UserDynamoTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: "mia-backend-user"
+        AttributeDefinitions:
+          - AttributeName: login
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: login
+            KeyType: HASH
+    UserTokenDynamoTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: "mia-backend-user-token"
+        AttributeDefinitions:
+          - AttributeName: token
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        TimeToLiveSpecification:
+          AttributeName: expiredAt
+          Enabled: true
+        KeySchema:
+          - AttributeName: token
             KeyType: HASH
