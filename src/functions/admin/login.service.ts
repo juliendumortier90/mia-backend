@@ -18,6 +18,7 @@ export interface User {
     passwordMd5: string
     password: string
     creationDate: string
+    isActivate: boolean
 }
 
 export class LoginService {
