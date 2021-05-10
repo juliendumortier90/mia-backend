@@ -17,6 +17,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 
     userToAdd.creationDate = timestampNowPlus(1, 'seconds').toString()
     userToAdd.isActivate = false
+    userToAdd.roles = []
     
     // get in bdd by login
     await LoginService.addUser(userToAdd)

@@ -7,6 +7,25 @@ custom:
     includeModules: true
     forceExclude:
       - aws-sdk
+  authorizer:
+    clientApiKey:
+      name: authorizerApiKey
+      type: request
+      identitySource: method.request.header.X-API-KEY, context.path
+      resultTtlInSeconds: 60
+  cors:
+
+allowedOrigins:
+  origin: https://madeinapremont.fr,http://madeinapremont.fr,https://localhost:4200,http://localhost:4200
+  jsOrigin: https://madeinapremont\.fr,http://madeinapremont\.fr,https://localhost:4200,http://localhost:4200
+  headers:
+    - Content-Type
+    - X-Amz-Date
+    - Authorization
+    - X-Amz-Security-Token
+    - X-Amz-User-Agent
+    - x-client-app-id
+  allowCredentials: false
 
 package:
   excludeDevDependencies: true
@@ -33,6 +52,12 @@ provider:
       Resource: ["arn:aws:lambda:*"]
 
 functions:
+  authorizerApiKey:
+    handler: src/functions/authorizer/index.validation
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["dynamodb:Scan"]
+        Resource: [!GetAtt UserTokenDynamoTable.Arn]
   login:
     handler: src/functions/admin/login/index.handler
     iamRoleStatements:
@@ -93,6 +118,7 @@ functions:
       - http:
           path: /shop/add-item
           method: post
+          authorizer: ${self:custom.authorizer.clientApiKey}
           cors: true
   delete-shop-item:
     handler: src/functions/shop/delete-item/index.handler
@@ -104,6 +130,7 @@ functions:
       - http:
           path: /shop/delete-item
           method: post
+          authorizer: ${self:custom.authorizer.clientApiKey}
           cors: true
   check-stock:
     handler: src/functions/shop/check-stock/index.handler
@@ -244,3 +271,75 @@ resources:
         KeySchema:
           - AttributeName: login
             KeyType: HASH
+    # CORS
+    # This response is needed for custom authorizer failures cors support ¯\_(ツ)_/¯
+    GatewayResponse:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: EXPIRED_TOKEN
+        RestApiId:
+          Ref: "ApiGatewayRestApi"
+        StatusCode: "401"
+        ResponseTemplates:
+          application/json: '{"errorCode"}'
+    AuthFailureGatewayResponse:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: UNAUTHORIZED
+        RestApiId:
+          Ref: "ApiGatewayRestApi"
+        StatusCode: "401"
+        ResponseTemplates:
+          application/json: '{"errorCode"}'
+    GatewayResponseResourceNotFound:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: RESOURCE_NOT_FOUND
+        RestApiId:
+          Ref: "ApiGatewayRestApi"
+        StatusCode: "404"
+        ResponseTemplates:
+          application/json: '{"errorCode"}'
+    AccessDeniedGatewayResponse:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: ACCESS_DENIED
+        RestApiId:
+          Ref: "ApiGatewayRestApi"
+        StatusCode: "403"
+        ResponseTemplates:
+          application/json: '{"errorCode"}'
+    GatewayResponseDefault4XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: "ApiGatewayRestApi"
+        ResponseTemplates:
+          application/json: '{"errorCode"}'
+    GatewayResponseDefault5XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_5XX
+        RestApiId:
+          Ref: "ApiGatewayRestApi"
+        ResponseTemplates:
+          application/json: '{"errorCode"}'

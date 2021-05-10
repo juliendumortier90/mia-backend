@@ -29,7 +29,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       throw new ApiError('Login', 'user is not activated', 'user is not activated', 433)
     }
     const userToken = await LoginService.generateTokenForUser(user)
-    return Response.makeSuccessResponse({ token : userToken })
+    return Response.makeSuccessResponse({ token : userToken, roles : user.roles })
   } catch (error) {
     return Response.makeErrorResponse(error)
   }

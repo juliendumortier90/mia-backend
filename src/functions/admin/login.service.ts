@@ -19,6 +19,7 @@ export interface User {
     password: string
     creationDate: string
     isActivate: boolean
+    roles: string[]
 }
 
 export class LoginService {
@@ -62,6 +63,7 @@ export class LoginService {
         Logger.logInfo('LoginService', 'generate token for user : ' + user.login + ' ; token: ' + token)
         const userToken = {
             login: user.login,
+            roles: user.roles,
             token: token,
             expiredAt: timestampNowPlus(2, 'days').toString(),
         }
