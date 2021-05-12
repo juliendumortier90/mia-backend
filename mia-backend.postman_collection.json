@@ -310,146 +310,417 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "instagram oauth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/instagram/oauth",
+							"protocol": "https",
+							"host": [
+								"sb59re9hg9",
+								"execute-api",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"integ",
+								"instagram",
+								"oauth"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "instagram list feeds",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/instagram/list-feeds",
-					"protocol": "https",
-					"host": [
-						"sb59re9hg9",
-						"execute-api",
-						"eu-west-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"integ",
-						"instagram",
-						"list-feeds"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "shop list items",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/shop/list-items",
-					"protocol": "https",
-					"host": [
-						"sb59re9hg9",
-						"execute-api",
-						"eu-west-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"integ",
-						"shop",
-						"list-items"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "shop delete item",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"id\": \"id to delete\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "paypal direct",
+			"item": [
+				{
+					"name": "generate token",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
 						}
-					}
-				},
-				"url": {
-					"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/shop/delete-item",
-					"protocol": "https",
-					"host": [
-						"sb59re9hg9",
-						"execute-api",
-						"eu-west-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"integ",
-						"shop",
-						"delete-item"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "shop add item",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"id\": \"id to delete\",\n    \"type\": \"TSHIRT\",\n    \"name\": \"teeshirt MIA taille XL\",\n    \"price\": 20,\n    \"instock\": true,\n    \"pictures\": [\"picture1\"],\n    \"paypalRef\": \"paypalRef\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "EGSN-3XZANjg567HDD58wBHF9UrMcuEjWuDp1mYQYT4b6hyD3Azk7MJ04SLbvCBZXmu9Sk42Ym5hZfBN",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "ARkJXyaiP9QAJpk2A235mcCBPPv5z2TzeGzX2C26oGgqsSPA-RuHxPU73cwyQolaDnOzZCUYompaIfmz",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en_US",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api-m.sandbox.paypal.com/v1/oauth2/token",
+							"protocol": "https",
+							"host": [
+								"api-m",
+								"sandbox",
+								"paypal",
+								"com"
+							],
+							"path": [
+								"v1",
+								"oauth2",
+								"token"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/shop/add-item",
-					"protocol": "https",
-					"host": [
-						"sb59re9hg9",
-						"execute-api",
-						"eu-west-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"integ",
-						"shop",
-						"add-item"
-					]
+				{
+					"name": "make a payment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"auth\":\n      {\n        \"user\": \"ARkJXyaiP9QAJpk2A235mcCBPPv5z2TzeGzX2C26oGgqsSPA-RuHxPU73cwyQolaDnOzZCUYompaIfmz\",\n        \"pass\": \"EGSN-3XZANjg567HDD58wBHF9UrMcuEjWuDp1mYQYT4b6hyD3Azk7MJ04SLbvCBZXmu9Sk42Ym5hZfBN\"\n      },\n      \"body\":\n      {\n        \"intent\": \"sale\",\n        \"payer\":\n        {\n          \"payment_method\": \"paypal\"\n        },\n        \"transactions\": [\n        {\n          \"amount\":\n          {\n            \"total\": \"5.99\",\n            \"currency\": \"EUR\"\n          }\n        }],\n        \"redirect_urls\":\n        {\n          \"return_url\": \"https://example.com\",\n          \"cancel_url\": \"https://example.com\"\n        }\n      },\n      \"json\": true\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api-m.sandbox.paypal.com/v2/checkout/orders/7UE93339AX294694M",
+							"protocol": "https",
+							"host": [
+								"api-m",
+								"sandbox",
+								"paypal",
+								"com"
+							],
+							"path": [
+								"v2",
+								"checkout",
+								"orders",
+								"7UE93339AX294694M"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "instagram oauth",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/instagram/oauth",
-					"protocol": "https",
-					"host": [
-						"sb59re9hg9",
-						"execute-api",
-						"eu-west-1",
-						"amazonaws",
-						"com"
-					],
-					"path": [
-						"integ",
-						"instagram",
-						"oauth"
-					]
+			"name": "instagram",
+			"item": [
+				{
+					"name": "instagram list feeds",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/instagram/list-feeds",
+							"protocol": "https",
+							"host": [
+								"sb59re9hg9",
+								"execute-api",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"integ",
+								"instagram",
+								"list-feeds"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "shop",
+			"item": [
+				{
+					"name": "shop list items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/shop/list-items",
+							"protocol": "https",
+							"host": [
+								"sb59re9hg9",
+								"execute-api",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"integ",
+								"shop",
+								"list-items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shop delete item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"id to delete\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/shop/delete-item",
+							"protocol": "https",
+							"host": [
+								"sb59re9hg9",
+								"execute-api",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"integ",
+								"shop",
+								"delete-item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shop add item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"id to delete\",\n    \"type\": \"TSHIRT\",\n    \"name\": \"teeshirt MIA taille XL\",\n    \"price\": 20,\n    \"stock\": 10,\n    \"pictures\": [\"picture1\"],\n    \"paypalRef\": \"paypalRef\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/shop/add-item",
+							"protocol": "https",
+							"host": [
+								"sb59re9hg9",
+								"execute-api",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"integ",
+								"shop",
+								"add-item"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shop create order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"articleIds\": [ \"tbhdbnm8t\" ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/shop/create-order",
+							"protocol": "https",
+							"host": [
+								"sb59re9hg9",
+								"execute-api",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"integ",
+								"shop",
+								"create-order"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.environment.set(\"token\", jsonData.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"login\": \"toto@toto.com\",\n    \"password\": \"ab4f63f9ac65152575886860dde480a1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/admin/login",
+							"protocol": "https",
+							"host": [
+								"sb59re9hg9",
+								"execute-api",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"integ",
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"login\": \"tata\",\n    \"passwordMd5\": \"mdddd5\",\n    \"password\": \"mdddd5\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/admin/add-user",
+							"protocol": "https",
+							"host": [
+								"sb59re9hg9",
+								"execute-api",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"integ",
+								"admin",
+								"add-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list members",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://sb59re9hg9.execute-api.eu-west-1.amazonaws.com/integ/member/list-members",
+							"protocol": "https",
+							"host": [
+								"sb59re9hg9",
+								"execute-api",
+								"eu-west-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"integ",
+								"member",
+								"list-members"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
