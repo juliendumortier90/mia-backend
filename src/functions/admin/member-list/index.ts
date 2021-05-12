@@ -1,6 +1,6 @@
 import { APIGatewayProxyResult } from 'aws-lambda'
-import { Response } from '../../../utils/reponse'
 import { MemberService } from '../../member/member.service'
+import { Response } from '../../../utils/reponse'
 
 export const handler = async (): Promise<APIGatewayProxyResult> =>   {
   try {

@@ -168,6 +168,18 @@ functions:
           path: /member/hello-callback
           method: post
           cors: true
+  list-members:
+    handler: src/functions/admin/member-list/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["dynamodb:Scan"]
+        Resource: [!GetAtt MemberItemDynamoTable.Arn]
+    events:
+      - http:
+          path: /member/list-members
+          method: get
+          authorizer: ${self:custom.authorizer.clientApiKey}
+          cors: true
   insta-oauth:
     handler: src/functions/instagram/authentication/index.handler
     iamRoleStatements:
