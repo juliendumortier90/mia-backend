@@ -12,7 +12,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         hasPaid: true,
         email: item.data?.items[0]?.customFields?.find(field => field.name === 'Email').answer,
         dateOfBirth: item.data?.payer?.dateOfBirth,
-        firstName: item.data?.items[0]?.user?.firstname,
+        firstName: item.data?.items[0]?.user?.firstName,
         lastName: item.data?.items[0]?.user?.lastName,
         phoneNumber: item.data?.items[0]?.customFields?.find(field => field.name === 'Numéro de téléphone').answer,
         address: item.data?.items[0]?.customFields?.find(field => field.name === 'Adresse').answer,
