@@ -180,6 +180,30 @@ functions:
           method: get
           authorizer: ${self:custom.authorizer.clientApiKey}
           cors: true
+  add-member-item:
+    handler: src/functions/admin/add-member/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["dynamodb:GetItem", "dynamodb:PutItem"]
+        Resource: [!GetAtt MemberItemDynamoTable.Arn]
+    events:
+      - http:
+          path: /member/add-member
+          method: post
+          authorizer: ${self:custom.authorizer.clientApiKey}
+          cors: true
+  member-update-paid:
+    handler: src/functions/admin/member-update-paid/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["dynamodb:GetItem", "dynamodb:PutItem"]
+        Resource: [!GetAtt MemberItemDynamoTable.Arn]
+    events:
+      - http:
+          path: /member/update-paid
+          method: post
+          authorizer: ${self:custom.authorizer.clientApiKey}
+          cors: true
   insta-oauth:
     handler: src/functions/instagram/authentication/index.handler
     iamRoleStatements:
@@ -250,13 +274,13 @@ resources:
     MemberItemDynamoTable:
       Type: "AWS::DynamoDB::Table"
       Properties:
-        TableName: "mia-backend-member-item"
+        TableName: "mia-backend-member-email"
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: email
             AttributeType: S
         BillingMode: PAY_PER_REQUEST
         KeySchema:
-          - AttributeName: id
+          - AttributeName: email
             KeyType: HASH
     UserDynamoTable:
       Type: "AWS::DynamoDB::Table"

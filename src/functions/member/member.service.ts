@@ -3,13 +3,12 @@ import { DynamoActions } from "../../utils/dynamodb"
 import { Logger } from "../../utils/logger"
 
 const databaseService: DocumentClient = new DocumentClient()
-const DB_NAME_MEMBER_ITEM = 'mia-backend-member-item'
+const DB_NAME_MEMBER_ITEM = 'mia-backend-member-email'
 
 export interface MemberItem {
-    id?: string
+    email: string
     isHelloAsso: boolean
     hasPaid: boolean
-    email: string
     dateOfBirth: string
     firstName: string
     lastName: string
@@ -19,17 +18,36 @@ export interface MemberItem {
     city: string
     practice: string
     helloAssoData: string
+    creationDate: string
 }
 
 export class MemberService {
   public static async addMember(member: MemberItem) {
-    const id = Math.random().toString(36).substr(2, 20)
-    member.id = id
+    member.creationDate = Date.now().toString()
     Logger.logInfo('MemberService', 'Add member : ' + JSON.stringify(member))
     await DynamoActions.put({
         TableName: DB_NAME_MEMBER_ITEM,
         Item: member
     }, databaseService)
+  }
+
+  public static async updatePaid(memberId) {
+    const member = await this.getMemberByEmail(memberId)
+    if (!member.isHelloAsso) {
+      member.hasPaid = !member.hasPaid
+      Logger.logInfo('MemberService', 'Update paid status dor member : ' + JSON.stringify(member))
+      await DynamoActions.put({
+          TableName: DB_NAME_MEMBER_ITEM,
+          Item: member
+      }, databaseService)
+    }
+  }
+
+  public static async getMemberByEmail(memberEmail: string): Promise<MemberItem> {
+    return await DynamoActions.get({
+      TableName: DB_NAME_MEMBER_ITEM,
+      Key: { email: memberEmail }
+    }, databaseService) as MemberItem
   }
 
   public static async listMembers(): Promise<MemberItem[]> {
