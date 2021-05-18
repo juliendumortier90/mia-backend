@@ -11,6 +11,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     }
     member.helloAssoData = ''
     member.isHelloAsso = false
+    member.creationDate = Date.now().toString()
     await MemberService.addMember(member as MemberItem)
     return Response.makeSuccessResponse()
   } catch (error) {

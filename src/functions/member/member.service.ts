@@ -23,7 +23,6 @@ export interface MemberItem {
 
 export class MemberService {
   public static async addMember(member: MemberItem) {
-    member.creationDate = Date.now().toString()
     Logger.logInfo('MemberService', 'Add member : ' + JSON.stringify(member))
     await DynamoActions.put({
         TableName: DB_NAME_MEMBER_ITEM,
