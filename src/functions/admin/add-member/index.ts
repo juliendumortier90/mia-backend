@@ -2,6 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
 import { MemberItem, MemberService } from '../../member/member.service'
 import { ApiError } from '../../../utils/apiError'
 import { Response } from '../../../utils/reponse'
+import { getFormatedTodayDateSlash } from '../../../utils/date'
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> =>   {
   try {
@@ -11,7 +12,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     }
     member.helloAssoData = ''
     member.isHelloAsso = false
-    member.creationDate = Date.now().toString()
+    member.creationDate = getFormatedTodayDateSlash()
     await MemberService.addMember(member as MemberItem)
     return Response.makeSuccessResponse()
   } catch (error) {

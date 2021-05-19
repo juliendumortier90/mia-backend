@@ -1,4 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
+import { getFormatedTodayDateSlash } from '../../../utils/date'
 import { Response } from '../../../utils/reponse'
 import { MemberService } from '../member.service'
 
@@ -20,7 +21,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         city: item.data?.items[0]?.customFields?.find(field => field.name === 'Ville').answer,
         practice: item.data?.items[0]?.customFields?.find(field => field.name === 'Type de pratique').answer,
         helloAssoData: item,
-        creationDate: Date.now().toString()
+        creationDate: getFormatedTodayDateSlash()
       }
       await MemberService.addMember(member)
     }

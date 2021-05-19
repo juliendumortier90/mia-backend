@@ -108,6 +108,42 @@ functions:
           path: /shop/list-items
           method: get
           cors: true
+  list-shop-orders:
+    handler: src/functions/order/list-orders/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["dynamodb:Scan", "dynamodb:PutItem"]
+        Resource: [!GetAtt OrderItemDynamoTable.Arn]
+    events:
+      - http:
+          path: /admin/list-shop-orders
+          method: get
+          authorizer: ${self:custom.authorizer.clientApiKey}
+          cors: true
+  order-update-comment:
+    handler: src/functions/order/update-comment/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["dynamodb:GetItem", "dynamodb:PutItem"]
+        Resource: [!GetAtt OrderItemDynamoTable.Arn]
+    events:
+      - http:
+          path: /admin/update-order-comment
+          method: post
+          authorizer: ${self:custom.authorizer.clientApiKey}
+          cors: true
+  order-update-status:
+    handler: src/functions/order/update-status/index.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ["dynamodb:GetItem", "dynamodb:PutItem"]
+        Resource: [!GetAtt OrderItemDynamoTable.Arn]
+    events:
+      - http:
+          path: /admin/update-order-status
+          method: post
+          authorizer: ${self:custom.authorizer.clientApiKey}
+          cors: true
   add-shop-item:
     handler: src/functions/shop/add-item/index.handler
     iamRoleStatements:

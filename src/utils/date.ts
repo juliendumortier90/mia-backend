@@ -10,6 +10,7 @@ export const formatDateFromDayjs = (date: dayjs.Dayjs): string => dayjs(date).tz
 export const formatDate = (date: string): string => formatDateFromDayjs(dayjs(date))
 
 export const getFormatedTodayDate = (): string => dayjs().tz('Europe/Paris').format('YYYY-MM-DD')
+export const getFormatedTodayDateSlash = (): string => dayjs().tz('Europe/Paris').format('DD/MM/YYYY')
 export const getFormatedTodayDateWithTime = (): string => dayjs().tz('Europe/Paris').format('YYYY-MM-DDThh:mm:ss')
 
 export const dateIsAfterNow = (dateString: string): boolean => dayjs(dateString).isAfter(dayjs().tz('Europe/Paris'))
