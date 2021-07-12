@@ -19,7 +19,8 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         address: item.data?.items[0]?.customFields?.find(field => field.name === 'Adresse').answer,
         postalCode: item.data?.items[0]?.customFields?.find(field => field.name === 'Code Postal').answer,
         city: item.data?.items[0]?.customFields?.find(field => field.name === 'Ville').answer,
-        practice: item.data?.items[0]?.customFields?.find(field => field.name === 'Type de pratique').answer,
+        practice: item.data?.items[0]?.customFields?.find(field => field.name === 'Pratique sportive').answer,
+        commentaire: item.data?.items[0]?.customFields?.find(field => field.name === 'Commentaire').answer,
         helloAssoData: item,
         creationDate: getFormatedTodayDateSlash()
       }

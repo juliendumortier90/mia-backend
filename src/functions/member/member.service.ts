@@ -18,6 +18,7 @@ export interface MemberItem {
     city: string
     practice: string
     helloAssoData: string
+    commentaire: string
     creationDate: string
 }
 
