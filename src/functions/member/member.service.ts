@@ -21,7 +21,6 @@ export interface MemberItem {
     commentaire: string
     creationDate: string
 }
-
 export class MemberService {
   public static async addMember(member: MemberItem) {
     Logger.logInfo('MemberService', 'Add member : ' + JSON.stringify(member))
